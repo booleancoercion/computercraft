@@ -234,7 +234,7 @@ function turnAround()
     end
 
     local couldMove = true
-    if (going_north and disp.z == 15) or (not going_north and disp.z == 0) then
+    if (going_north and disp.z ~= 15) or (not going_north and disp.z ~= 0) then
         couldMove = moveDigForward()
     end
 
@@ -302,6 +302,7 @@ function main()
                 refresh()
             end
         until disp.z == z_limit
+        going_north = not going_north
     end
 end
 
