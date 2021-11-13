@@ -36,7 +36,7 @@ local going_north = true
     or whether it should start heading back/refuel.
 ]]
 function canContinue()
-    local distance = disp.x + disp.y + disp.z
+    local distance = math.abs(disp.x) + math.abs(disp.y) + math.abs(disp.z)
     local fuel_remaining = turtle.getFuelLevel()
 
     return (fuel_remaining - 1) > (distance + 1)
@@ -171,7 +171,7 @@ function goHome()
     repeat
         turnRight()
     until facing == SOUTH
-    for _=disp.z,1,-1 do
+    for _=disp.z,-1 do
         turtle.forward()
     end
 
@@ -199,7 +199,7 @@ function goBack()
     end
 
     turnLeft() -- now facing north
-    for _=disp.z,1,-1 do
+    for _=disp.z,-1 do
         turtle.forward()
     end
 
@@ -235,7 +235,7 @@ function turnAround()
 
     local couldMove = true
     print("turning around at disp.z = " .. disp.z .. " and disp.x = " .. disp.x)
-    if (going_north and disp.z ~= 15) or (not going_north and disp.z ~= 0) then
+    if (going_north and disp.z ~= -15) or (not going_north and disp.z ~= 0) then
         couldMove = moveDigForward()
     end
 
@@ -273,7 +273,7 @@ function main()
             refresh()
         end
 
-        local z_limit = going_north and 15 or 0 -- going_north ? 15 : 0
+        local z_limit = going_north and -15 or 0 -- going_north ? 15 : 0
         repeat
             local x_limit = (facing == EAST) and 15 or 0
             repeat
