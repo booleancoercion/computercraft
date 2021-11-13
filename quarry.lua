@@ -259,6 +259,7 @@ function main()
     while true do
         if not moveDigDown() then
             goHome()
+            print("Cannot move or dig down, finishing...")
             return
         end
 
@@ -272,6 +273,7 @@ function main()
             repeat
                 if not moveDigForward() then
                     goHome()
+                    print("Cannot move or dig forwards, finishing...")
                     return
                 end
 
@@ -287,6 +289,7 @@ function main()
 
             if not turnAround() then
                 goHome()
+                print("Cannot continue operation, finishing...")
                 return
             end
 
