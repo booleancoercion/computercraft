@@ -234,6 +234,7 @@ function turnAround()
     end
 
     local couldMove = true
+    print("turning around at disp.z = " .. disp.z .. " and disp.x = " .. disp.x)
     if (going_north and disp.z ~= 15) or (not going_north and disp.z ~= 0) then
         couldMove = moveDigForward()
     end
