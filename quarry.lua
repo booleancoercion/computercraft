@@ -233,8 +233,9 @@ function turnAround()
         turnRight()
     end
 
+    local couldMove = true
     if (going_north and disp.z == 15) or (not going_north and disp.z == 0) then
-        moveDigForward()
+        couldMove = moveDigForward()
     end
 
     if turn_left then
@@ -242,6 +243,8 @@ function turnAround()
     else
         turnRight()
     end
+
+    return couldMove
 end
 
 function main()
