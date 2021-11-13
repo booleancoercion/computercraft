@@ -162,6 +162,7 @@ end
     Also updates the cached_facing variable to be used with goBack.
 ]]
 function goHome()
+    print("Going home...")
     cached_facing = facing
     for _=disp.y,-1 do
         turtle.up()
@@ -213,6 +214,7 @@ end
 
 function refresh()
     goHome() -- now facing south
+    print("Refreshing...")
     turtle.suck()
     turtle.refuel()
 
