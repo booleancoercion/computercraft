@@ -287,20 +287,8 @@ function main()
             refresh()
         end
 
-        --[[
-            Explanation for the disparity between x_limit and z_limit:
-            x's loop runs *up to and including* when we get to x_limit.
-            
-            z's loop does that too, but as it turns out, the same kind of logic
-            doesn't work: x's loop doesn't do any extra actions, while z's loop
-            needs to first do x's loop and then turn around. If we turn around
-            and stop the loop when we get to the limit, the last x loop
-            of the layer will not be run and there will be a residual row of blocks.
-        ]]
-        local z_limit = going_north and -SIDE_LENGTH or 0 -- going_north ? -SIDE_LENGTH : 0
-        repeat
-            local x_limit = (facing == EAST) and (SIDE_LENGTH - 1) or 0
-            repeat
+        for _=1,(SIDE_LENGTH-1) do
+            for _=1,(SIDE_LENGTH-1) do
                 if not moveDigForward() then
                     goHome()
                     print("Cannot move or dig forwards, finishing...")
@@ -310,7 +298,7 @@ function main()
                 if not canContinue() then
                     refresh()
                 end
-            until disp.x == x_limit
+            end
 
             local hasEmptySpots = dropJunk()
             if not hasEmptySpots or not canContinue() then
@@ -326,7 +314,7 @@ function main()
             if not canContinue() then
                 refresh()
             end
-        until disp.z == z_limit
+        end
         going_north = not going_north
     end
 end
