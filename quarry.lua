@@ -14,6 +14,8 @@
     Made by boolean_coercion.
 ]]
 
+-- The side length of the square hole that the turtle will be digging.
+local SIDE_LENGTH = 16
 
 local disp = {x = 0, y = 0, z = 0}
 
@@ -84,6 +86,14 @@ function moveDigForward()
 end
 
 local valuable_infixes = {"_ore", "coal", "diamond", "emerald", "redstone", "lapis"}
+
+--[[
+    Note about the dropJunk and dropCoal functions: we call turtle.select(1)
+    at the end of each one to ensure that the item pointer will always be in
+    the first slot while the turtle is digging. This ensures that items get stacked
+    properly in the turtle's inventory.
+]]
+
 --[[
     Searches the turtle's inventory for junk (anything that isn't an ore or other
     valuable item) and drops it.
@@ -115,6 +125,8 @@ function dropJunk()
         end
     end
 
+    turtle.select(1)
+
     return hasEmpty
 end
 
@@ -133,6 +145,8 @@ function dropCoal(invert)
             end
         end
     end
+
+    turtle.select(1)
 end
 
 --[[
@@ -235,7 +249,7 @@ function turnAround()
 
     local couldMove = true
     print("turning around at disp.z = " .. disp.z .. " and disp.x = " .. disp.x)
-    if (going_north and disp.z ~= -15) or (not going_north and disp.z ~= 0) then
+    if (going_north and disp.z ~= -(SIDE_LENGTH-1)) or (not going_north and disp.z ~= 0) then
         couldMove = moveDigForward()
     end
 
@@ -273,9 +287,19 @@ function main()
             refresh()
         end
 
-        local z_limit = going_north and -15 or 0 -- going_north ? 15 : 0
+        --[[
+            Explanation for the disparity between x_limit and z_limit:
+            x's loop runs *up to and including* when we get to x_limit.
+            
+            z's loop does that too, but as it turns out, the same kind of logic
+            doesn't work: x's loop doesn't do any extra actions, while z's loop
+            needs to first do x's loop and then turn around. If we turn around
+            and stop the loop when we get to the limit, the last x loop
+            of the layer will not be run and there will be a residual row of blocks.
+        ]]
+        local z_limit = going_north and -SIDE_LENGTH or 0 -- going_north ? -SIDE_LENGTH : 0
         repeat
-            local x_limit = (facing == EAST) and 15 or 0
+            local x_limit = (facing == EAST) and (SIDE_LENGTH - 1) or 0
             repeat
                 if not moveDigForward() then
                     goHome()
