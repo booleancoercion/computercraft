@@ -287,7 +287,12 @@ function main()
             refresh()
         end
 
-        for _=1,(SIDE_LENGTH-1) do
+        --[[
+            X's loop has one less iteration because Z's loop basically does the first
+            iteration for free.
+        ]]
+
+        for _=1,SIDE_LENGTH do
             for _=1,(SIDE_LENGTH-1) do
                 if not moveDigForward() then
                     goHome()
